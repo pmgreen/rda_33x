@@ -7,14 +7,15 @@
 ; from: 20130326
 ; for: profcats
 ; insert i as 18th byte in ldr
-; insert ‡e rda in 040 if not there
+; insert ‡e rda in 040 if not present
+; insert 040 if not present
 ; insert 336, 337, 338
 ; - 336 ‡a text ‡2 rdacontent
 ; - 337 ‡a unmediated ‡2 rdamedia
 ; - 338 ‡a volume ‡2 rdacarrier
 ; **************************************************************
 
-; NOTE: rs was getting runtime error 521 (clipboard error). Clearing the clipboard seems to have helped.
+; NOTE: rs was getting runtime error 521 (clipboard error). ClipPut("") and Sleep() seem to have helped.
 
 #include <Clipboard.au3>
 
@@ -85,7 +86,6 @@ Func insert_040()
 			Sleep(50)
 			$a = ClipGet()
 			Sleep(50) ; this pause in necessary on some W7 machines
-			;MsgBox(0, "", $a)
 		Until ($a = 040) Or ($a >= 041) Or ($a == "")
 	EndIf
 
@@ -100,7 +100,7 @@ Func insert_040()
 			ClipPut(StringRegExpReplace($field040, "‡c", "‡e rda ‡c"))
 			Send("^v")
 		EndIf
-	ElseIf $a >= 041 Then
+	ElseIf $a >= 041 Or $a == "" Then
 		Send("{F3}")
 		Send("040")
 		Send("{TAB}")
@@ -108,7 +108,7 @@ Func insert_040()
 		Send("{TAB}")
 		Send("0")
 		Send("{TAB}")
-		Send("‡a NjP ‡e rda") ; TODO: check this
+		Send("NjP ‡b eng ‡e rda") ; TODO: check this
 	ElseIf $a == "" Then
 		$msg = MsgBox(0, "", "No 040? Please check and try again.")
 		If $msg = 1 Then
