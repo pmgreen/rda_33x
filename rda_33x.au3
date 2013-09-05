@@ -1,5 +1,5 @@
 #region ;**** Directives created by AutoIt3Wrapper_GUI ****
-#AutoIt3Wrapper_Outfile=tryme.exe
+#AutoIt3Wrapper_outfile=rda_3xx.exe
 #AutoIt3Wrapper_Run_Tidy=y
 #endregion ;**** Directives created by AutoIt3Wrapper_GUI ****
 ; **************************************************************
@@ -100,7 +100,7 @@ Func insert_040()
 			ClipPut(StringRegExpReplace($field040, "‡c", "‡e rda ‡c"))
 			Send("^v")
 		EndIf
-	ElseIf $a >= 041 Or $a == "" Then
+	ElseIf $a >= 041 Then
 		Send("{F3}")
 		Send("040")
 		Send("{TAB}")
@@ -108,11 +108,37 @@ Func insert_040()
 		Send("{TAB}")
 		Send("0")
 		Send("{TAB}")
-		Send("NjP ‡b eng ‡e rda") ; TODO: check this
+		Send("NjP ‡b eng ‡e rda ‡c NjP")
 	ElseIf $a == "" Then
-		$msg = MsgBox(0, "", "No 040? Please check and try again.")
-		If $msg = 1 Then
-			main()
+		ClipPut("") ; clear out clipboard first
+		Sleep(10)
+		Send("{CTRLDOWN}{HOME 2}{CTRLUP}")
+		Sleep(10)
+		Send("{F8}")
+		Send("^c")
+		Sleep(50)
+		$b = ClipGet()
+		Sleep(50)
+		If $b < 040 Then
+			Do
+				ClipPut("")
+				Send("{DOWN}")
+				Send("{F8}")
+				Send("^c")
+				Sleep(50)
+				$b = ClipGet()
+				Sleep(50) ; this pause in necessary on some W7 machines
+			Until ($b > 040)
+		EndIf
+		If $b > 040 Then
+			Send("{F3}")
+			Send("040")
+			Send("{TAB}")
+			Send("0")
+			Send("{TAB}")
+			Send("0")
+			Send("{TAB}")
+			Send("NjP ‡b eng ‡e rda ‡c NjP")
 		EndIf
 	EndIf
 	ClipPut("")
