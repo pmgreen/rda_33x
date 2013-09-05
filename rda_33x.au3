@@ -16,8 +16,7 @@
 ; **************************************************************
 
 ; NOTE: rs was getting runtime error 521 (clipboard error). ClipPut("") and Sleep() seem to have helped.
-
-#include <Clipboard.au3>
+; May want to consider using Clipboard functions (see help).
 
 Opt("WinTitleMatchMode", 2) ; allow partial window matches
 
@@ -77,7 +76,7 @@ Func insert_040()
 	Sleep(50)
 	$a = ClipGet()
 	Sleep(50)
-	If $a <> 040 Then
+	If ($a <> "" And $a < 040) Then
 		Do
 			ClipPut("")
 			Send("{DOWN}")
@@ -88,7 +87,6 @@ Func insert_040()
 			Sleep(50) ; this pause in necessary on some W7 machines
 		Until ($a = 040) Or ($a >= 041) Or ($a == "")
 	EndIf
-
 	If $a = 040 Then
 		ClipPut("")
 		Send("{TAB 3}")
@@ -99,7 +97,17 @@ Func insert_040()
 		If Not StringInStr($field040, "‡e rda") Then
 			ClipPut(StringRegExpReplace($field040, "‡c", "‡e rda ‡c"))
 			Send("^v")
+			Sleep(50)
+			ClipPut("")
 		EndIf
+		Sleep(10)
+		If Not StringInStr($field040, "‡b eng") Then
+			ClipPut(StringRegExpReplace($field040, "‡e", "‡b eng ‡e"))
+			Send("^v")
+			Sleep(50)
+			ClipPut("")
+		EndIf
+		Sleep(10)
 	ElseIf $a >= 041 Then
 		Send("{F3}")
 		Send("040")
@@ -109,7 +117,7 @@ Func insert_040()
 		Send("0")
 		Send("{TAB}")
 		Send("NjP ‡b eng ‡e rda ‡c NjP")
-	ElseIf $a == "" Then
+	ElseIf $a == "" Or $a < 040 Then
 		ClipPut("") ; clear out clipboard first
 		Sleep(10)
 		Send("{CTRLDOWN}{HOME 2}{CTRLUP}")
@@ -146,7 +154,6 @@ Func insert_040()
 	add_3xx()
 
 EndFunc   ;==>insert_040
-
 
 Func add_3xx()
 	$336 = "text ‡2 rdacontent"
@@ -249,11 +256,8 @@ Func add_3xx()
 		EndIf
 	EndIf
 	Sleep(10)
-
 	;finished()
-
 EndFunc   ;==>add_3xx
-
 
 Func finished()
 	; this is just for fun -- random messages on completion
@@ -268,7 +272,5 @@ Func finished()
 		Case Else
 			$msg = "RDA master!"
 	EndSwitch
-
 	MsgBox(0, "done", $msg)
-
 EndFunc   ;==>finished
