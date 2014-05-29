@@ -159,9 +159,9 @@ Func insert_040()
 EndFunc   ;==>insert_040
 
 Func add_3xx()
-	$336 = "text ‡2 rdacontent"
-	$337 = "unmediated ‡2 rdamedia"
-	$338 = "volume ‡2 rdacarrier"
+	$336 = "text ‡b txt ‡2 rdacontent"
+	$337 = "unmediated ‡b n ‡2 rdamedia"
+	$338 = "volume ‡b nc ‡2 rdacarrier"
 	ClipPut("") ; overkill, just to be sure
 	Send("{CTRLDOWN}{HOME 2}{CTRLUP}")
 
