@@ -1,5 +1,5 @@
 #region ;**** Directives created by AutoIt3Wrapper_GUI ****
-#AutoIt3Wrapper_outfile=rda_3xx.exe
+#AutoIt3Wrapper_outfile=rda_33x.exe
 #AutoIt3Wrapper_Run_Tidy=y
 #endregion ;**** Directives created by AutoIt3Wrapper_GUI ****
 ; **************************************************************
@@ -114,11 +114,7 @@ Func insert_040()
 	ElseIf $a >= 041 Then
 		Send("{F3}")
 		Send("040")
-		Send("{TAB}")
-		Send("0")
-		Send("{TAB}")
-		Send("0")
-		Send("{TAB}")
+		Send("{TAB 3}")
 		Send("NjP ‡b eng ‡e rda ‡c NjP")
 	ElseIf $a == "" Or $a < 040 Then
 		ClipPut("") ; clear out clipboard first
